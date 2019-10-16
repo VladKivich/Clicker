@@ -18,6 +18,7 @@ namespace ProgressBar
         private const float MAX_REDUCE_TIME = 5f;
         private const float MIN_REDUCE_TIME = 0.25f;
         private int countOfClicks;
+        private bool isBlocked;
 
         private void Awake()
         {
@@ -37,6 +38,10 @@ namespace ProgressBar
                 {
                     amount -= 0.01f;
                     Fill.fillAmount = amount;
+                }
+                else if(amount == 0)
+                {
+                    isBlocked = false;
                 }
             }
         }
@@ -66,11 +71,15 @@ namespace ProgressBar
 
         public void IncreaseClickCount()
         {
-            if (Fill.fillAmount < 1f)
+            if (Fill.fillAmount < 1f && !isBlocked)
             {
-                Fill.fillAmount += 0.01f;
+                Fill.fillAmount += 0.05f;
                 countOfClicks++;
                 ChangeClickCount();
+            }
+            else
+            {
+                isBlocked = true;
             }
         }
 
