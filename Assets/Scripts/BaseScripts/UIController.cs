@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProgressBar;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
