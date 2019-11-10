@@ -5,7 +5,7 @@ namespace Models
     public class GameProgress
     {
         private int currentAmount;
-        public event Action<GameProgress> OnModelUpdate;
+        public event Action OnModelUpdate;
 
         public GameProgress()
         {
