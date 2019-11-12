@@ -17,7 +17,7 @@ namespace BaseScripts
 
         #region Buttons
 
-        [SerializeField] private MainButtonScript mainButton;
+        [SerializeField] private ClickerMainButton mainButton;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace BaseScripts
             GetCore = this;
             GetMB = this;
             GetProgress = new GameProgress();
-            mainButton.AutoCLickCountDown = AutoClickCountDown;
+            mainButton.DelayBeforeAutoClick = AutoClickCountDown;
 
             #region CreateControllers
 

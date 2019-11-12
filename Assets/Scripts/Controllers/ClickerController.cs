@@ -1,4 +1,5 @@
 ﻿using BaseScripts;
+using Helpers;
 using Models;
 using System.Collections;
 using UnityEngine;
@@ -10,12 +11,15 @@ namespace Controllers
         private GameProgress progress;
         private MonoBehaviour mb;
 
-        private MainButtonScript mainButton;
+        private ClickerMainButton mainButton;
+        private ProgressBarCPU cpu;
 
         private Coroutine autoClick;
         private float autoClickTime = 5.0f;
 
-        public ClickerController(MainButtonScript mainButton)
+        public ClickerStates state { get; private set; }
+
+        public ClickerController(ClickerMainButton mainButton)
         {
             progress = Core.GetProgress;
             mb = Core.GetMB;
@@ -29,7 +33,7 @@ namespace Controllers
             mainButton.onButtonClick += OnClick;
             mainButton.onButtonPressedStart += OnPressedStart;
             mainButton.onButtonPressedEnd += OnPressedEnd;
-
+            state = ClickerStates.ActiveClicks;
         }
 
         public override void Off()
@@ -38,22 +42,23 @@ namespace Controllers
             mainButton.onButtonClick -= OnClick;
             mainButton.onButtonPressedStart -= OnPressedStart;
             mainButton.onButtonPressedEnd -= OnPressedEnd;
+            state = ClickerStates.Pause;
         }
 
         public void OnClick()
         {
+            //TODO Модель прогресса
             Debug.Log("Manual click +1");
+            
+
         }
 
         public void OnPressedStart()
         {
-            if(autoClick == null)
-            {
-                autoClick = mb.StartCoroutine(StartAutoClick());
-            }
+            autoClick = mb.StartCoroutine(AutoClicks());
         }
 
-        private IEnumerator StartAutoClick()
+        private IEnumerator AutoClicks()
         {
             var timeLeft = autoClickTime;
             while(timeLeft > 0)
