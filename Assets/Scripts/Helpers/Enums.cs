@@ -1,10 +1,15 @@
 ﻿namespace Helpers
 {
-    enum ClickerStates
+    public enum ClickerButtonStates
+    {
+        SingleClick,
+        ButtonIsPressed
+    }
+
+    public enum ClickerStates
     {
         ActiveClicks,
         AutoClicks,
-        Pause,
-        Disable
+        Pause
     }
 }

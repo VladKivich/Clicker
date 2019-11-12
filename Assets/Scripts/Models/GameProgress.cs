@@ -2,10 +2,20 @@
 
 namespace Models
 {
-    public class GameProgress
+    public interface IComputerComponents
     {
-        private int currentAmount;
+        float CPUCoolDownValue { get; }
+        int GPUAutoClickReward { get; }
+    }
+
+    public class GameProgress : IComputerComponents
+    {
+        public int currentAmount { get; private set; }
         public event Action OnModelUpdate;
+
+        //TO DO: Система улучшений
+        public float CPUCoolDownValue { get; private set; } = 0.05f;
+        public int GPUAutoClickReward { get; private set; } = 1;
 
         public GameProgress()
         {
