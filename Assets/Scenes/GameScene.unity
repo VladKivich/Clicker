@@ -264,10 +264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3fea539ecf47ae458534ab27a920cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gpuImage: {fileID: 1288411820}
-  cpuImage: {fileID: 1972772453}
-  AutoClickCountDown: 3
   mainButton: {fileID: 1658785487}
+  inGameUI: {fileID: 649175309}
   mainCamera: {fileID: 454387248}
 --- !u!1 &454387246
 GameObject:
@@ -430,6 +428,7 @@ GameObject:
   - component: {fileID: 649175308}
   - component: {fileID: 649175307}
   - component: {fileID: 649175306}
+  - component: {fileID: 649175309}
   m_Layer: 5
   m_Name: InGameUI
   m_TagString: Untagged
@@ -518,6 +517,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &649175309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649175304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6f1a28f3e40c746bcc45a27d0a9e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gpuImage: {fileID: 1288411820}
+  cpuImage: {fileID: 1972772453}
+  Amount: {fileID: 761566673}
+  IncomePerSecond: {fileID: 1805287695}
 --- !u!1 &761566671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,7 +1133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6fa5f2a4fe73d4882958dd20be2a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoCLickCountDown: 3
+  DelayBeforeAutoClick: 0
 --- !u!222 &1658785488
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1379,6 +1394,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GPU
+      objectReference: {fileID: 0}
+    - target: {fileID: 410738777517072230, guid: 0b47d2a7307931749ba73ee84971d031,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 410738777517072230, guid: 0b47d2a7307931749ba73ee84971d031,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.06727719
+      objectReference: {fileID: 0}
+    - target: {fileID: 410738777517072230, guid: 0b47d2a7307931749ba73ee84971d031,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1557379309356671656, guid: 0b47d2a7307931749ba73ee84971d031,
         type: 3}
@@ -1703,6 +1733,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CPU
       objectReference: {fileID: 0}
+    - target: {fileID: 410738777517072230, guid: 0b47d2a7307931749ba73ee84971d031,
+        type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1557379309356671656, guid: 0b47d2a7307931749ba73ee84971d031,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1807,11 +1842,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 410738777517072230, guid: 0b47d2a7307931749ba73ee84971d031,
-        type: 3}
-      propertyPath: m_FillAmount
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b47d2a7307931749ba73ee84971d031, type: 3}

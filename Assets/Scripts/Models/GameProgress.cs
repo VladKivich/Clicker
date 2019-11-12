@@ -4,8 +4,10 @@ namespace Models
 {
     public interface IComputerComponents
     {
-        float CPUCoolDownValue { get; }
-        int GPUAutoClickReward { get; }
+        float CPUCoolDownPercentagePerStep { get; }
+        float CPUHeatPercentagePerClick { get; }
+        int GPUAutoClickRewardPerSecond { get; }
+        float GPUFillBarPercentagePerClick { get; }
     }
 
     public class GameProgress : IComputerComponents
@@ -13,18 +15,35 @@ namespace Models
         public int currentAmount { get; private set; }
         public event Action OnModelUpdate;
 
-        //TO DO: Система улучшений
-        public float CPUCoolDownValue { get; private set; } = 0.05f;
-        public int GPUAutoClickReward { get; private set; } = 1;
+        //TODO: Система улучшений
+        public float CPUCoolDownPercentagePerStep { get; private set; } = 5f;
+        public float CPUHeatPercentagePerClick { get; private set; } = 7.5f;
+        public int GPUAutoClickRewardPerSecond { get; private set; } = 67;
+        public float GPUFillBarPercentagePerClick { get; private set; } = 2.75f;
+
+        private int moneyForClick = 10;
 
         public GameProgress()
         {
             currentAmount = 0;
         }
 
+        public void AddMoneyForClick()
+        {
+            currentAmount += moneyForClick;
+            OnModelUpdate?.Invoke();
+        }
+
+        public void AddMoneyAutoClick(int money)
+        {
+            currentAmount+= money;
+            OnModelUpdate?.Invoke();
+        }
+
         public void AddMoney(int amount)
         {
             currentAmount += amount;
+            OnModelUpdate?.Invoke();
         }
 
         public bool CanSpendMoney(int amountToSpend)
