@@ -6,7 +6,7 @@ namespace Models
     public abstract class ProgressBar
     {
         private protected float currentFillAmount;
-        private protected float unit = 0.01f;
+        private protected float unit = Constants.PROGRESS_BAR_UNIT;
 
         public event Action onModelUpdate;
 
@@ -37,6 +37,27 @@ namespace Models
         public void Reset()
         {
             currentFillAmount = 0;
+        }
+
+        public abstract void UpdateComponentsInfo();
+    }
+
+    public class ProgressBarCPU : ProgressBar
+    {
+        private IComputerComponents progress;
+
+        private float CPUCoolDownValue;
+
+        public ProgressBarCPU(IComputerComponents progress)
+        {
+            currentFillAmount = 0;
+            this.progress = progress;
+            UpdateComponentsInfo();
+        }
+
+        public override void UpdateComponentsInfo()
+        {
+            CPUCoolDownValue = progress.CPUCoolDownValue;
         }
     }
 }
