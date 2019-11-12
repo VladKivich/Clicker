@@ -108,7 +108,7 @@ namespace Models
         {
             get
             {
-                return currentFillAmount >= 1;
+                return currentFillAmount >= Constants.MAXIMUM_FILL_AMOUNT;
             }
         }
 

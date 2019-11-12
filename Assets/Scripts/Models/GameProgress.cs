@@ -18,7 +18,7 @@ namespace Models
         //TODO: Система улучшений
         public float CPUCoolDownPercentagePerStep { get; private set; } = 5f;
         public float CPUHeatPercentagePerClick { get; private set; } = 7.5f;
-        public int GPUAutoClickRewardPerSecond { get; private set; } = 67;
+        public int GPUAutoClickRewardPerSecond { get; private set; } = 50;
         public float GPUFillBarPercentagePerClick { get; private set; } = 2.75f;
 
         private int moneyForClick = 10;
