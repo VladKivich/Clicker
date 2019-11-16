@@ -1,4 +1,5 @@
 ﻿using Controllers;
+using Helpers;
 using Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,23 +8,17 @@ namespace BaseScripts
 {
     public class Core : MonoBehaviour
     {
-        #region ProgressBars
+        #region Buttons&UI
 
-        [SerializeField] private Image gpuImage;
-        [SerializeField] private Image cpuImage;
-        [SerializeField, Range(1, 5)] private float AutoClickCountDown = 3f;
-
-        #endregion
-
-        #region Buttons
-
-        [SerializeField] private MainButtonScript mainButton;
+        [SerializeField] private ClickerMainButton mainButton;
+        [SerializeField] private InGameUI inGameUI;
 
         #endregion
 
         #region Controllers&Models
 
         private ClickerController clickerController;
+        private UIController uiController;
 
         #endregion
 
@@ -38,11 +33,12 @@ namespace BaseScripts
             GetCore = this;
             GetMB = this;
             GetProgress = new GameProgress();
-            mainButton.AutoCLickCountDown = AutoClickCountDown;
+            mainButton.DelayBeforeAutoClick = Constants.DELAY_BEFOR_AUTO_CLICK;
 
             #region CreateControllers
 
             clickerController = new ClickerController(mainButton);
+            uiController = new UIController(inGameUI, clickerController);
 
             #endregion
         }
