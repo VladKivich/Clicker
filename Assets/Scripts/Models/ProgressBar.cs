@@ -3,12 +3,12 @@ using System;
 
 namespace Models
 {
-    public abstract class ProgressBar
+    public abstract class ProgressBar: IModel
     {
         private protected float currentFillAmount;
         private protected float unit = Constants.PROGRESS_BAR_UNIT;
 
-        public event Action onModelUpdate;
+        public event Action OnModelUpdate;
 
         public float GetCurrentAmount
         {
@@ -26,7 +26,7 @@ namespace Models
 
         protected void Update()
         {
-            onModelUpdate?.Invoke();
+            OnModelUpdate?.Invoke();
         }
 
         public abstract void UpdateComponentsInfo();

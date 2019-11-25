@@ -2,6 +2,10 @@
 
 namespace Models
 {
+    public interface IModel
+    {
+        event Action OnModelUpdate;
+    }
     public interface IComputerComponents
     {
         float CPUCoolDownPercentagePerStep { get; }
@@ -10,7 +14,7 @@ namespace Models
         float GPUFillBarPercentagePerClick { get; }
     }
 
-    public class GameProgress : IComputerComponents
+    public class GameProgress : IComputerComponents, IModel
     {
         public int currentAmount { get; private set; }
         public event Action OnModelUpdate;

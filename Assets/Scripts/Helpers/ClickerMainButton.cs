@@ -13,9 +13,6 @@ public class ClickerMainButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
     private Coroutine pressedButtonDelay;
     private ClickerButtonStates state;
 
-    //TODO Изменить на константу
-    [HideInInspector] public float DelayBeforeAutoClick;
-
     private void Start()
     {
         state = ClickerButtonStates.SingleClick;
@@ -43,7 +40,7 @@ public class ClickerMainButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     private IEnumerator AutoClickDelay()
     {
-        yield return new WaitForSeconds(DelayBeforeAutoClick);
+        yield return new WaitForSeconds(Constants.DELAY_BEFOR_AUTO_CLICK);
         onButtonPressedStart?.Invoke();
         state = ClickerButtonStates.ButtonIsPressed;
     }

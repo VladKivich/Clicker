@@ -10,6 +10,7 @@ namespace Controllers
         {
             this.inGameUI = inGameUI;
             inGameUI.SetModels(clickerController);
+            Core.Instance.AddController<UIController>(this);
         }
     }
 }

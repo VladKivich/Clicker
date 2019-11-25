@@ -1,8 +1,8 @@
 ﻿using Controllers;
-using Helpers;
 using Models;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BaseScripts
 {
@@ -19,33 +19,75 @@ namespace BaseScripts
 
         private ClickerController clickerController;
         private UIController uiController;
+        private QuestController questController;
+
+        private Dictionary<Type,BaseController> controllers;
 
         #endregion
 
         [SerializeField] private Camera mainCamera;
 
-        public static Core GetCore { get; private set; }
-        public static MonoBehaviour GetMB { get; private set; }
-        public static GameProgress GetProgress { get; private set; }
+        public static Core Instance { get; private set; }
+        public MonoBehaviour GetMB { get; private set; }
+        public GameProgress GetProgress
+        {
+            get
+            {
+                return gameProgress;
+            }
+        }
+
+        private GameProgress gameProgress;
+
 
         private void Awake()
         {
-            GetCore = this;
-            GetMB = this;
-            GetProgress = new GameProgress();
-            mainButton.DelayBeforeAutoClick = Constants.DELAY_BEFOR_AUTO_CLICK;
+            if(Instance == null)
+            {
+                Instance = this;
+            }
 
+            if(GetMB == null)
+            {
+                GetMB = this;
+            }
+            
+            if(gameProgress == null)
+            {
+                gameProgress = new GameProgress();
+            }
+        }
+
+        private void Start()
+        {
             #region CreateControllers
+
+            controllers = new Dictionary<Type, BaseController>();
 
             clickerController = new ClickerController(mainButton);
             uiController = new UIController(inGameUI, clickerController);
+            questController = new QuestController();
 
             #endregion
         }
 
-        private void LateUpdate()
+        public void AddController<C>(C controller)where C: BaseController
         {
+            var type = typeof(C);
+            if (!controllers.ContainsKey(type))
+            {
+                controllers.Add(type, controller);
+            }
+        }
 
+        public C GetController<C>() where C : BaseController
+        {
+            var type = typeof(C);
+            if (controllers.ContainsKey(type))
+            {
+                return (C)controllers[type];
+            }
+            return null;
         }
     }
 }

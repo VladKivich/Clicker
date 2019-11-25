@@ -1,7 +1,6 @@
 ﻿using BaseScripts;
 using Helpers;
 using Models;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -24,12 +23,13 @@ namespace Controllers
 
         public ClickerController(ClickerMainButton mainButton)
         {
-            progress = Core.GetProgress;
-            mb = Core.GetMB;
+            progress = Core.Instance.GetProgress;
+            mb = Core.Instance.GetMB;
             this.mainButton = mainButton;
             cpu = new ProgressBarCPU(progress);
             gpu = new ProgressBarGPU(progress);
             On();
+            Core.Instance.AddController<ClickerController>(this);
         }
 
         public override void On()

@@ -18,11 +18,11 @@ namespace Controllers
 
         public void SetModels(ClickerController clickerController)
         {
-            progress = Core.GetProgress;
+            progress = Core.Instance.GetProgress;
             cpu = clickerController.cpu;
             gpu = clickerController.gpu;
-            cpu.onModelUpdate += OnCPUModelUpdate;
-            gpu.onModelUpdate += OnGPUModelUpdate;
+            cpu.OnModelUpdate += OnCPUModelUpdate;
+            gpu.OnModelUpdate += OnGPUModelUpdate;
             progress.OnModelUpdate += OnAmountUpdate;
             cpu.Reset();
             gpu.Reset();
