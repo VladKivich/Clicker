@@ -1133,7 +1133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6fa5f2a4fe73d4882958dd20be2a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayBeforeAutoClick: 0
 --- !u!222 &1658785488
 CanvasRenderer:
   m_ObjectHideFlags: 0
