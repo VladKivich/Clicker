@@ -50,7 +50,7 @@ namespace Models
         private float HeatValue;
         private bool overHeat;
 
-        public bool IsOverHeater
+        public bool IsOverHeated
         {
             get => overHeat;
         }

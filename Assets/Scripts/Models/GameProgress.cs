@@ -11,6 +11,7 @@ namespace Models
         float CPUCoolDownPercentagePerStep { get; }
         float CPUHeatPercentagePerClick { get; }
         int GPUAutoClickRewardPerSecond { get; }
+        int MoneyForSingleClick { get; }
         float GPUFillBarPercentagePerClick { get; }
     }
 
@@ -24,8 +25,7 @@ namespace Models
         public float CPUHeatPercentagePerClick { get; private set; } = 7.5f;
         public int GPUAutoClickRewardPerSecond { get; private set; } = 50;
         public float GPUFillBarPercentagePerClick { get; private set; } = 2.75f;
-
-        private int moneyForClick = 10;
+        public int MoneyForSingleClick { get; private set; } = 10;
 
         public GameProgress()
         {
@@ -34,13 +34,13 @@ namespace Models
 
         public void AddMoneyForClick()
         {
-            currentAmount += moneyForClick;
+            currentAmount += MoneyForSingleClick;
             OnModelUpdate?.Invoke();
         }
 
-        public void AddMoneyAutoClick(int money)
+        public void AddMoneyForAutoClick(int money)
         {
-            currentAmount+= money;
+            currentAmount += money;
             OnModelUpdate?.Invoke();
         }
 

@@ -1,4 +1,5 @@
-﻿using Controllers;
+﻿using Assets.Scripts.Helpers;
+using Controllers;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace BaseScripts
         private UIController uiController;
         private QuestController questController;
 
-        private Dictionary<Type,BaseController> controllers;
+        private Dictionary<Type, BaseController> controllers;
 
         #endregion
 
@@ -39,20 +40,19 @@ namespace BaseScripts
 
         private GameProgress gameProgress;
 
-
         private void Awake()
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 Instance = this;
             }
 
-            if(GetMB == null)
+            if (GetMB == null)
             {
                 GetMB = this;
             }
-            
-            if(gameProgress == null)
+
+            if (gameProgress == null)
             {
                 gameProgress = new GameProgress();
             }
@@ -71,7 +71,7 @@ namespace BaseScripts
             #endregion
         }
 
-        public void AddController<C>(C controller)where C: BaseController
+        public void AddController<C>(C controller) where C : BaseController
         {
             var type = typeof(C);
             if (!controllers.ContainsKey(type))
@@ -88,6 +88,19 @@ namespace BaseScripts
                 return (C)controllers[type];
             }
             return null;
+        }
+
+        public List<IGameEventSender> GetQuestsEventsSenders()
+        {
+            var result = new List<IGameEventSender>();
+            foreach (var item in controllers.Values)
+            {
+                if (item is IGameEventSender requredType)
+                {
+                    result.Add(requredType);
+                }
+            }
+            return result;
         }
     }
 }
