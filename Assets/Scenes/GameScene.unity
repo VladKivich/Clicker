@@ -265,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainButton: {fileID: 1658785487}
+  testButton: {fileID: 1774357475}
   inGameUI: {fileID: 649175309}
   mainCamera: {fileID: 454387248}
 --- !u!1 &454387246
