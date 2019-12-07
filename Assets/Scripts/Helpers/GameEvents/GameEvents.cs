@@ -6,8 +6,8 @@ namespace Assets.Scripts.Helpers.GameEvents
 
     public class AddMoneyGEvent : BaseGEvent
     {
-        public readonly int money;
-        public AddMoneyGEvent(int money)
+        public readonly uint money;
+        public AddMoneyGEvent(uint money)
         {
             this.money = money;
         }

@@ -25,8 +25,8 @@ namespace Controllers
             quests = new Dictionary<int, List<GameQuests>>();
             {
                 quests.Add((int)GEventType.SingleClick, new List<GameQuests>());
-                quests[(int)GEventType.SingleClick].Add(new ClicksQuest(25, GEventType.SingleClick,
-                    "Make 25 clicks", 100));
+                quests[(int)GEventType.SingleClick].Add(new ClicksQuest(15, GEventType.SingleClick,
+                    "Make 15 clicks", 100));
                 quests.Add((int)GEventType.AutoClick, new List<GameQuests>());
                 quests[(int)GEventType.AutoClick].Add(new ClicksQuest(3, GEventType.AutoClick,
                     "Make 3 autoclicks", 300));
@@ -89,7 +89,8 @@ namespace Controllers
             var senderEventTypes = sender.GetSendingGEventTypes.GetType();
             var bitNumber = Enum.GetNames(senderEventTypes).Length;
             var number = (int)sender.GetSendingGEventTypes;
-            var rightShift = (sizeof(int) * 8) - 1;
+            var bitsInByte = 8;
+            var rightShift = (sizeof(int) * bitsInByte) - 1;
             var leftShift = rightShift;
             for (int i = 0; i < bitNumber; i++)
             {
@@ -122,7 +123,8 @@ namespace Controllers
 
         private void QuestCompleteNotification(GameQuests quest)
         {
-            Debug.Log($"Quest is complete. Quest task was {quest.QuestDescription} Your reward = {quest.RewardMoney}");
+            Debug.Log($"Quest is complete. Quest task was {quest.QuestDescription} " +
+                $"Your reward = {quest.RewardMoney}");
             quest.RemoveQuestCompletedAction(QuestCompleteNotification);
             progress.AddMoney(quest.RewardMoney);
             GetGEventComplexNotification(GEventType.EarnMoney, new AddMoneyGEvent(quest.RewardMoney));

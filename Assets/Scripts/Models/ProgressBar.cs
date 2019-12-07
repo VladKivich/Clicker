@@ -1,4 +1,5 @@
-﻿using Helpers;
+﻿using Assets.Scripts.Helpers;
+using Helpers;
 using System;
 
 namespace Models
@@ -43,9 +44,10 @@ namespace Models
             }
         }
     }
+
     public class ProgressBarCPU : ProgressBar
     {
-        private IComputerComponents components;
+        private IComponentsPC components;
         private float CoolDownValue;
         private float HeatValue;
         private bool overHeat;
@@ -55,10 +57,14 @@ namespace Models
             get => overHeat;
         }
 
-        public ProgressBarCPU(IComputerComponents components)
+        public ProgressBarCPU(IComponentsPC components)
         {
             currentFillAmount = 0;
             this.components = components;
+            if(components is IModel model)
+            {
+                model.OnModelUpdate += UpdateComponentsInfo;
+            }
             UpdateComponentsInfo();
         }
 
@@ -98,7 +104,7 @@ namespace Models
 
     public class ProgressBarGPU : ProgressBar
     {
-        private IComputerComponents components;
+        private IComponentsPC components;
         public float IncomePerAutoClickStep { get; private set; }
 
         private float FillBarPerClick;
@@ -112,12 +118,16 @@ namespace Models
             }
         }
 
-        public ProgressBarGPU(IComputerComponents components)
+        public ProgressBarGPU(IComponentsPC components)
         {
             currentFillAmount = 0;
             this.components = components;
             ReduceBarPerAutoClickStep = (Constants.MAXIMUM_FILL_AMOUNT / Constants.AUTO_CLICK_TIME) 
                 * Constants.AUTO_CLICK_STEP_TIME;
+            if (components is IModel model)
+            {
+                model.OnModelUpdate += UpdateComponentsInfo;
+            }
             UpdateComponentsInfo();
         }
 

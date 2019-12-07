@@ -4,6 +4,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BaseScripts
 {
@@ -12,6 +13,7 @@ namespace BaseScripts
         #region Buttons&UI
 
         [SerializeField] private ClickerMainButton mainButton;
+        [SerializeField] private Button testButton;
         [SerializeField] private InGameUI inGameUI;
 
         #endregion
@@ -21,6 +23,7 @@ namespace BaseScripts
         private ClickerController clickerController;
         private UIController uiController;
         private QuestController questController;
+        private ShopController shopController;
 
         private Dictionary<Type, BaseController> controllers;
 
@@ -66,9 +69,12 @@ namespace BaseScripts
 
             clickerController = new ClickerController(mainButton);
             uiController = new UIController(inGameUI, clickerController);
+            shopController = new ShopController();
             questController = new QuestController();
 
             #endregion
+
+            testButton.onClick.AddListener(TestButtonClick);
         }
 
         public void AddController<C>(C controller) where C : BaseController
@@ -101,6 +107,11 @@ namespace BaseScripts
                 }
             }
             return result;
+        }
+
+        public void TestButtonClick()
+        {
+            shopController.UpgradeComponent<GPU>();
         }
     }
 }

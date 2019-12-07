@@ -1,35 +1,43 @@
-﻿using System;
+﻿using Assets.Scripts.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace Models
 {
-    public interface IModel
+    public class GameProgress : IComponentsPC, IModel
     {
-        event Action OnModelUpdate;
-    }
-    public interface IComputerComponents
-    {
-        float CPUCoolDownPercentagePerStep { get; }
-        float CPUHeatPercentagePerClick { get; }
-        int GPUAutoClickRewardPerSecond { get; }
-        int MoneyForSingleClick { get; }
-        float GPUFillBarPercentagePerClick { get; }
-    }
-
-    public class GameProgress : IComputerComponents, IModel
-    {
-        public int currentAmount { get; private set; }
+        public uint currentAmount { get; private set; }
         public event Action OnModelUpdate;
 
-        //TODO: Система улучшений
-        public float CPUCoolDownPercentagePerStep { get; private set; } = 5f;
-        public float CPUHeatPercentagePerClick { get; private set; } = 7.5f;
-        public int GPUAutoClickRewardPerSecond { get; private set; } = 50;
-        public float GPUFillBarPercentagePerClick { get; private set; } = 2.75f;
-        public int MoneyForSingleClick { get; private set; } = 10;
+        private GPU gpu;
+        private CPU cpu;
+        private Monitor monitor;
+
+        private Dictionary<Type, IComputerComponent> components;
+
+        #region ComponentsSpecifications
+
+        public float CPUCoolDownPercentagePerStep => cpu.CoolDownPercentagePerStep;
+        public float CPUHeatPercentagePerClick => cpu.HeatPercentagePerClick;
+        public int GPUAutoClickRewardPerSecond => gpu.AutoClickRewardPerSecond;
+        public float GPUFillBarPercentagePerClick => gpu.FillBarPercentagePerClick;
+        public uint MoneyForSingleClick => monitor.MoneyForSingleClick;
+
+        #endregion
 
         public GameProgress()
         {
             currentAmount = 0;
+            gpu = new GPU();
+            cpu = new CPU();
+            monitor = new Monitor();
+
+            components = new Dictionary<Type, IComputerComponent>()
+            {
+                {typeof(GPU), gpu},
+                {typeof(CPU), cpu},
+                {typeof(Monitor), monitor}
+            };
         }
 
         public void AddMoneyForClick()
@@ -38,19 +46,19 @@ namespace Models
             OnModelUpdate?.Invoke();
         }
 
-        public void AddMoneyForAutoClick(int money)
+        public void AddMoneyForAutoClick(uint money)
         {
             currentAmount += money;
             OnModelUpdate?.Invoke();
         }
 
-        public void AddMoney(int amount)
+        public void AddMoney(uint amount)
         {
             currentAmount += amount;
             OnModelUpdate?.Invoke();
         }
 
-        public bool CanSpendMoney(int amountToSpend)
+        public bool CanSpendMoney(uint amountToSpend)
         {
             if (currentAmount >= amountToSpend)
             {
@@ -58,6 +66,35 @@ namespace Models
                 return true;
             }
             return false;
+        }
+
+        public void UpdateComponent(IComputerComponentModel component)
+        {
+            switch (component)
+            {
+                case GPUModel gpuComponent:
+                    gpu.UpdateComponent(component);
+                    break;
+                case CPUModel cpuComponent:
+                    cpu.UpdateComponent(component);
+                    break;
+                case MonitorModel monitorComponent:
+                    monitor.UpdateComponent(component);
+                    break;
+                default:
+                    return;
+            }
+            OnModelUpdate?.Invoke();
+        }
+
+        public IComputerComponent GetComponentModel<T>() where T : IComputerComponent
+        {
+            var type = typeof(T);
+            if (components.ContainsKey(type))
+            {
+                return components[type];
+            }
+            return null;
         }
     }
 }

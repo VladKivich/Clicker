@@ -23,7 +23,7 @@ namespace Controllers
 
         public ClickerStates state { get; private set; }
 
-        private int autoClickMoney = 0;
+        private uint autoClickMoney = 0;
 
         private GEventType questEventTypes;
 
@@ -112,7 +112,7 @@ namespace Controllers
             }
         }
 
-        private void TrySendCoplexGameEvent(GEventType type, int currentMoney)
+        private void TrySendCoplexGameEvent(GEventType type, uint currentMoney)
         {
             if (currentQuestEventTypes.HasFlag(type))
             {
@@ -159,7 +159,7 @@ namespace Controllers
                 temp += gpu.IncomePerAutoClickStep;
                 if (temp >= 1)
                 {
-                    autoClickMoney = (int)temp;
+                    autoClickMoney = (uint)temp;
                     OnClick();
                     temp -= autoClickMoney;
                     autoClickMoney = 0;

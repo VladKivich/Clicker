@@ -16,4 +16,39 @@ namespace Assets.Scripts.Helpers
 
         event Action<GEventType> SendSimpleGEvent;
     }
+
+    public interface IComponentsPC
+    {
+        float CPUCoolDownPercentagePerStep { get; }
+        float CPUHeatPercentagePerClick { get; }
+        int GPUAutoClickRewardPerSecond { get; }
+        float GPUFillBarPercentagePerClick { get; }
+        uint MoneyForSingleClick { get; }
+    }
+
+    public interface IComputerComponent
+    {
+        uint Level { get; }
+        void UpdateComponent(IComputerComponentModel component);
+        IComputerComponentModel GetComponentModel();
+    }
+
+    public interface IComputerComponentModel
+    {
+        uint Level { get; }
+    }
+    public interface IShopItem
+    {
+        string Description { get; }
+        uint Cost { get; }
+        IComputerComponent GetTypeOfShopItem();
+        uint GetShopItemLevel();
+        void UpdateItemLevel();
+        IComputerComponentModel GetShopItemModel();
+    }
+
+    public interface IModel
+    {
+        event Action OnModelUpdate;
+    }
 }
