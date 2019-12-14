@@ -2,10 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using BaseScripts;
+using System;
+using Controllers;
 
-namespace Controllers
+namespace View
 {
-    public class InGameUI : MonoBehaviour
+    public class InGameUIView : MonoBehaviour
     {
         [SerializeField] private Image gpuImage;
         [SerializeField] private Image cpuImage;
@@ -30,7 +32,7 @@ namespace Controllers
 
         private void OnAmountUpdate()
         {
-            Amount.text = progress.currentAmount + " $";
+            Amount.text = String.Format($"{progress.currentAmount} $");
         }
 
         private void OnCPUModelUpdate()

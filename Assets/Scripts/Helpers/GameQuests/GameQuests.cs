@@ -5,7 +5,7 @@ namespace Assets.Scripts.Helpers.GameQuests
 {
     public abstract class GameQuests
     {
-        public readonly GEventType QuestEvent;
+        public readonly GameEventType QuestEvent;
 
         public readonly string QuestDescription;
 
@@ -15,7 +15,7 @@ namespace Assets.Scripts.Helpers.GameQuests
 
         private event Action<GameQuests> questCompletedEvent;
 
-        public GameQuests(GEventType eventType, string descript, uint reward, DateTime time)
+        public GameQuests(GameEventType eventType, string descript, uint reward, DateTime time)
         {
             QuestEvent = eventType;
             QuestDescription = descript;
@@ -28,9 +28,9 @@ namespace Assets.Scripts.Helpers.GameQuests
             questCompletedEvent += action;
         }
 
-        public void RemoveQuestCompletedAction(Action<GameQuests> action)
+        public void RemoveQuestCompletedAction()
         {
-            questCompletedEvent -= action;
+            questCompletedEvent = null;
         }
 
         protected void StartQuestCompletedActions()
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Helpers.GameQuests
 
         public int RemainClicks { get; private set; }
 
-        public ClicksQuest(int clicks, GEventType click, string description, uint reward)
+        public ClicksQuest(int clicks, GameEventType click, string description, uint reward)
             : base(click, description, reward, DateTime.Now)
         {
             numberOfClicks = clicks;
@@ -69,7 +69,7 @@ namespace Assets.Scripts.Helpers.GameQuests
         public uint currentAmountToEarn;
 
         public MoneyQuest(uint amount, string description, uint reward)
-            : base(GEventType.EarnMoney, description, reward, DateTime.Now)
+            : base(GameEventType.EarnMoney, description, reward, DateTime.Now)
         {
             AmountToEarn = amount;
             currentAmountToEarn = amount;

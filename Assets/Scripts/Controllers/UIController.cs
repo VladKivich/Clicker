@@ -1,12 +1,13 @@
 ﻿using BaseScripts;
+using View;
 
 namespace Controllers
 {
     public class UIController : BaseController
     {
-        private InGameUI inGameUI;
+        private InGameUIView inGameUI;
 
-        public UIController(InGameUI inGameUI, ClickerController clickerController)
+        public UIController(InGameUIView inGameUI, ClickerController clickerController)
         {
             this.inGameUI = inGameUI;
             inGameUI.SetModels(clickerController);

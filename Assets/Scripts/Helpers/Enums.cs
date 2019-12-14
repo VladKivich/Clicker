@@ -3,7 +3,7 @@
 namespace Helpers
 {
     [Flags]
-    public enum GEventType:int
+    public enum GameEventType:int
     {
         SingleClick = 1,
         AutoClick = 2,

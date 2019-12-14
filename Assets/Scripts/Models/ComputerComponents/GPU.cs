@@ -9,6 +9,8 @@ namespace Models
         public float FillBarPercentagePerClick { get; }
         public uint Level { get; }
 
+        public ComputerModule moduleType => ComputerModule.Monitor;
+
         public GPUModel(int autoClickReward, float fillbarPercent, uint level)
         {
             AutoClickRewardPerSecond = autoClickReward;

@@ -4,7 +4,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using View;
 
 namespace BaseScripts
 {
@@ -13,8 +13,7 @@ namespace BaseScripts
         #region Buttons&UI
 
         [SerializeField] private ClickerMainButton mainButton;
-        [SerializeField] private Button testButton;
-        [SerializeField] private InGameUI inGameUI;
+        [SerializeField] private InGameUIView inGameUI;
 
         #endregion
 
@@ -24,6 +23,7 @@ namespace BaseScripts
         private UIController uiController;
         private QuestController questController;
         private ShopController shopController;
+        private MessageController messageController;
 
         private Dictionary<Type, BaseController> controllers;
 
@@ -33,13 +33,7 @@ namespace BaseScripts
 
         public static Core Instance { get; private set; }
         public MonoBehaviour GetMB { get; private set; }
-        public GameProgress GetProgress
-        {
-            get
-            {
-                return gameProgress;
-            }
-        }
+        public GameProgress GetProgress => gameProgress;
 
         private GameProgress gameProgress;
 
@@ -71,10 +65,15 @@ namespace BaseScripts
             uiController = new UIController(inGameUI, clickerController);
             shopController = new ShopController();
             questController = new QuestController();
+            messageController = new MessageController();
+
+            //On every controller;
+            foreach (var controller in controllers.Values)
+            {
+                controller.On();
+            }
 
             #endregion
-
-            testButton.onClick.AddListener(TestButtonClick);
         }
 
         public void AddController<C>(C controller) where C : BaseController
@@ -96,7 +95,7 @@ namespace BaseScripts
             return null;
         }
 
-        public List<IGameEventSender> GetQuestsEventsSenders()
+        public List<IGameEventSender> GetGameEventsSenders()
         {
             var result = new List<IGameEventSender>();
             foreach (var item in controllers.Values)
@@ -107,11 +106,6 @@ namespace BaseScripts
                 }
             }
             return result;
-        }
-
-        public void TestButtonClick()
-        {
-            shopController.UpgradeComponent<GPU>();
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Models
         public float HeatPercentagePerClick { get; }
         public uint Level { get; }
 
+        public ComputerModule moduleType => ComputerModule.CPU;
+
         public CPUModel(float cooldownPercent, float heatPercentage, uint level)
         {
             CoolDownPercentagePerStep = cooldownPercent;

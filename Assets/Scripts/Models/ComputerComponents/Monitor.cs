@@ -8,6 +8,8 @@ namespace Models
         public uint MoneyForSingleClick { get; }
         public uint Level { get; }
 
+        public ComputerModule moduleType => ComputerModule.Monitor;
+
         public MonitorModel(uint moneyForClick, uint level)
         {
             MoneyForSingleClick = moneyForClick;

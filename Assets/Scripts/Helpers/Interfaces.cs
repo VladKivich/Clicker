@@ -4,18 +4,35 @@ using System;
 
 namespace Assets.Scripts.Helpers
 {
+    #region GameEvent Interfaces
+
+    //TODO Add to Core
+    public interface IMessageSystem
+    {
+        void AddHandlerWatchingEvent(IGameEventHandler handler, int eventKey);
+        void RemoveHandlerWatchingEvent(IGameEventHandler handler, int eventKey);
+    }
+
     public interface IGameEventSender
     {
-        GEventType GetSendingGEventTypes { get; }
+        GameEventType GetGameEventTypes { get; }
 
-        void StartSendingEventType(GEventType eventType);
+        void StartSendingEventType(GameEventType eventType);
 
-        void StopSendingEventType(GEventType eventType);
+        void StopSendingEventType(GameEventType eventType);
 
-        event Action<GEventType, BaseGEvent> SendComplexGEvent;
-
-        event Action<GEventType> SendSimpleGEvent;
+        event Action<GameEventType, GameEvent> SendComplexGameEventMessage;
+        event Action<GameEventType> SendSimpleGameEventMessage;
     }
+
+    public interface IGameEventHandler
+    {
+        void GetMessage(GameEventType eventType);
+
+        void GetMessage(GameEventType eventType, GameEvent eventData);
+    }
+
+    #endregion
 
     public interface IComponentsPC
     {
@@ -36,7 +53,9 @@ namespace Assets.Scripts.Helpers
     public interface IComputerComponentModel
     {
         uint Level { get; }
+        ComputerModule moduleType { get; }
     }
+
     public interface IShopItem
     {
         string Description { get; }

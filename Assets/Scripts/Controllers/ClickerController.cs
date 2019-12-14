@@ -25,17 +25,20 @@ namespace Controllers
 
         private uint autoClickMoney = 0;
 
-        private GEventType questEventTypes;
+        #region GameEvents
 
-        private GEventType currentQuestEventTypes;
+        private GameEventType questEventTypes;
 
-        public event Action<GEventType, BaseGEvent> SendComplexGEvent;
+        private GameEventType currentQuestEventTypes;
 
-        public event Action<GEventType> SendSimpleGEvent;
+        public GameEventType GetGameEventTypes => questEventTypes;
 
-        public GEventType GetSendingGEventTypes => questEventTypes;
+        public event Action<GameEventType, GameEvent> SendComplexGameEventMessage;
+        public event Action<GameEventType> SendSimpleGameEventMessage;
 
-        public void StartSendingEventType(GEventType eventType)
+        #endregion
+
+        public void StartSendingEventType(GameEventType eventType)
         {
             if (questEventTypes.HasFlag(eventType))
             {
@@ -43,9 +46,9 @@ namespace Controllers
             }
         }
 
-        public void StopSendingEventType(GEventType eventType)
+        public void StopSendingEventType(GameEventType eventType)
         {
-            if (questEventTypes.HasFlag(eventType))
+            if (questEventTypes.HasFlag(eventType) && currentQuestEventTypes.HasFlag(eventType))
             {
                 currentQuestEventTypes ^= eventType;
             }
@@ -53,14 +56,13 @@ namespace Controllers
 
         public ClickerController(ClickerMainButton mainButton)
         {
+            Core.Instance.AddController<ClickerController>(this);
             progress = Core.Instance.GetProgress;
             mb = Core.Instance.GetMB;
             this.mainButton = mainButton;
             cpu = new ProgressBarCPU(progress);
             gpu = new ProgressBarGPU(progress);
-            questEventTypes = GEventType.AutoClick | GEventType.SingleClick | GEventType.EarnMoney;
-            Core.Instance.AddController<ClickerController>(this);
-            On();
+            questEventTypes = GameEventType.AutoClick | GameEventType.SingleClick | GameEventType.EarnMoney;
         }
 
         public override void On()
@@ -91,38 +93,38 @@ namespace Controllers
                     if (!cpu.IsOverHeated)
                     {
                         cpu.AddUnit();
-                        TrySendSimpleGameEvent(GEventType.SingleClick);
+                        TrySendSimpleGameEvent(GameEventType.SingleClick);
                         progress.AddMoneyForClick();
-                        TrySendCoplexGameEvent(GEventType.EarnMoney, progress.MoneyForSingleClick);
+                        TrySendCoplexGameEvent(GameEventType.EarnMoney, progress.MoneyForSingleClick);
                     }
                     gpu.AddUnit();
                     break;
                 case ClickerStates.AutoClicks:
                     progress.AddMoneyForAutoClick(autoClickMoney);
-                    TrySendCoplexGameEvent(GEventType.EarnMoney, autoClickMoney);
+                    TrySendCoplexGameEvent(GameEventType.EarnMoney, autoClickMoney);
                     break;
             }
         }
 
-        private void TrySendSimpleGameEvent(GEventType type)
+        private void TrySendSimpleGameEvent(GameEventType type)
         {
             if (currentQuestEventTypes.HasFlag(type))
             {
-                SendSimpleGEvent?.Invoke(type);
+                SendSimpleGameEventMessage?.Invoke(type);
             }
         }
 
-        private void TrySendCoplexGameEvent(GEventType type, uint currentMoney)
+        private void TrySendCoplexGameEvent(GameEventType type, uint currentMoney)
         {
             if (currentQuestEventTypes.HasFlag(type))
             {
-                BaseGEvent gameEvent;
+                GameEvent gameEvent;
 
                 switch (type)
                 {
-                    case GEventType.EarnMoney:
-                        gameEvent = new AddMoneyGEvent(currentMoney);
-                        SendComplexGEvent?.Invoke(GEventType.EarnMoney, gameEvent);
+                    case GameEventType.EarnMoney:
+                        gameEvent = new AddMoneyGameEvent(currentMoney);
+                        SendComplexGameEventMessage?.Invoke(GameEventType.EarnMoney, gameEvent);
                         break;
                 }
             }
@@ -151,7 +153,7 @@ namespace Controllers
             var stepTime = Constants.AUTO_CLICK_STEP_TIME;
             state = ClickerStates.AutoClicks;
             float temp = 0f;
-            TrySendSimpleGameEvent(GEventType.AutoClick);
+            TrySendSimpleGameEvent(GameEventType.AutoClick);
             while (gpu.CanRemoveUnit)
             {
                 yield return new WaitForSeconds(stepTime);

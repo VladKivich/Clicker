@@ -2,26 +2,23 @@
 
 namespace Assets.Scripts.Helpers.GameEvents
 {
-    public abstract class BaseGEvent { }
+    public abstract class GameEvent { }
 
-    public class AddMoneyGEvent : BaseGEvent
+    public class AddMoneyGameEvent : GameEvent
     {
         public readonly uint money;
-        public AddMoneyGEvent(uint money)
+        public AddMoneyGameEvent(uint money)
         {
             this.money = money;
         }
     }
 
-    public class ModuleUpgradeGEvent : BaseGEvent
+    public class ModuleUpgradeGameEvent : GameEvent
     {
-        public readonly int moduleGrade;
-
         public readonly int computerModule;
-        public ModuleUpgradeGEvent(ComputerModule module, int grade)
+        public ModuleUpgradeGameEvent(ComputerModule module)
         {
             computerModule = (int)module;
-            moduleGrade = grade;
         }
     }
 }
